@@ -6,8 +6,7 @@ import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import localFont from "next/font/local";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
+import { ThemeProvider } from "./ui-test/DarkMode";
 
 config.autoAddCss = false;
 
@@ -43,13 +42,18 @@ export default async function RootLayout({
       };
 
   return (
-    <ClinetLayout
-      me={me}
-      fontVariable={pretendard.variable}
-      fontClassName={pretendard.className}
-    >
-      {children}
-    </ClinetLayout>
+    <html lang="en" className={`${pretendard.variable}`}>
+      <body className={`min-h-[100dvh] flex flex-col ${pretendard.className}`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ClinetLayout me={me}>{children}</ClinetLayout>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }
 
