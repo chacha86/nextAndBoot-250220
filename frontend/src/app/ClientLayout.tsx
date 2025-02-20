@@ -67,7 +67,7 @@ export default function ClinetLayout({
             )}
             {!isLogined && (
               <DropdownMenuItem>
-                <Link href="/member/login">로그인</Link>
+                <Link href="/member/login">관리자 로그인</Link>
               </DropdownMenuItem>
             )}
             {!isLogined && (
@@ -91,7 +91,7 @@ export default function ClinetLayout({
         </DropdownMenu>
         <ModeToggle />
       </header>
-      <div className="flex-grow">{children}</div>
+      <div className="flex flex-col flex-grow">{children}</div>
       <footer>푸터</footer>
     </>
   );
