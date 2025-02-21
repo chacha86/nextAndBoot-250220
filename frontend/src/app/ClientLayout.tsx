@@ -91,7 +91,9 @@ export default function ClinetLayout({
         </DropdownMenu>
         <ModeToggle />
       </header>
-      <div className="flex flex-col flex-grow">{children}</div>
+      <div className="flex flex-col flex-grow justify-center items-center">
+        {children}
+      </div>
       <footer>푸터</footer>
     </>
   );

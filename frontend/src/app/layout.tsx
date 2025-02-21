@@ -42,7 +42,11 @@ export default async function RootLayout({
       };
 
   return (
-    <html lang="en" className={`${pretendard.variable}`}>
+    <html
+      lang="en"
+      className={`${pretendard.variable}`}
+      suppressHydrationWarning
+    >
       <body className={`min-h-[100dvh] flex flex-col ${pretendard.className}`}>
         <ThemeProvider
           attribute="class"

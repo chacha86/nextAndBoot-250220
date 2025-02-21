@@ -23,7 +23,7 @@ export default function ClinetPage({
   const router = useRouter();
   const pageDto = rsData.data;
   return (
-    <div>
+    <div className="w-1/2">
       <h1>글 목록</h1>
       <div>응답 코드 : {rsData.code}</div>
       <div>결과 메시지 : {rsData.msg}</div>
