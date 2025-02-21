@@ -1,11 +1,5 @@
-import { Button } from "@/components/ui/button";
+import ClientPage from "./ClientPage";
 
 export default function Page() {
-  return (
-    <>
-      <div className="flex flex-grow justify-center items-center">
-        <Button>카카오 로그인</Button>
-      </div>
-    </>
-  );
+  return <ClientPage />;
 }

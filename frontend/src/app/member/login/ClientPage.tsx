@@ -1,8 +1,16 @@
 "use client";
 
 import client from "@/lib/backend/client";
+import {
+  LoginMemberContext,
+  useLoginMember,
+} from "@/stores/auth/loginMemberStore";
+import { useRouter } from "next/navigation";
+import { use } from "react";
 
 export default function ClinetPage() {
+  const router = useRouter();
+  const { setLoginMember } = use(LoginMemberContext);
   async function login(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -33,9 +41,8 @@ export default function ClinetPage() {
       alert(response.error.msg);
       return;
     }
-
-    // router.push(`/post/list`); // 브라우저 방식 X, 넥스트JS 방식
-    window.location.href = "/post/list"; // 브라우저 방식
+    setLoginMember(response.data.data.item);
+    router.replace("/");
   }
 
   return (
