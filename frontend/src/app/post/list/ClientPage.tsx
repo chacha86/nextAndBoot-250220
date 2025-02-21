@@ -1,6 +1,6 @@
 "use client";
 
-import ComboboxDemo from "@/app/ui-test/ComboboxDem";
+import ComboboxDemo from "@/components/ui/custom/Combobox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { components } from "@/lib/backend/apiV1/schema";

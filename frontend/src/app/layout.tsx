@@ -4,7 +4,7 @@ import ClinetLayout from "./ClientLayout";
 import localFont from "next/font/local";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import { ThemeProvider } from "./ui-test/DarkMode";
+import { ThemeProvider } from "../components/ui/custom/DarkMode";
 
 config.autoAddCss = false;
 

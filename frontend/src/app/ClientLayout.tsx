@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
-import { ModeToggle } from "./ui-test/DarkModeToggle";
+import { ModeToggle } from "../components/ui/custom/DarkModeToggle";
 import {
   LoginMemberContext,
   useLoginMember,
@@ -60,7 +60,6 @@ export default function ClinetLayout({
 
     removeLoginMember();
     router.replace("/");
-    // window.location.href = "/post/list";
   }
 
   return (
@@ -91,7 +90,7 @@ export default function ClinetLayout({
               )}
               {!isLogin && (
                 <DropdownMenuItem>
-                  <Link href="/member/login">관리자 로그인</Link>
+                  <Link href="/adm/member/login">관리자 로그인</Link>
                 </DropdownMenuItem>
               )}
               {!isLogin && (
@@ -118,7 +117,11 @@ export default function ClinetLayout({
         <div className="flex flex-col flex-grow justify-center items-center">
           {children}
         </div>
-        <footer>푸터</footer>
+        <footer className="flex justify-center gap-7 p-4">
+          <Link href="/adm">관리자</Link>
+          <Link href="/adm/member/login">관리자 로그인</Link>
+          <Link href="/member/me">내 정보</Link>
+        </footer>
       </LoginMemberContext.Provider>
     </>
   );
