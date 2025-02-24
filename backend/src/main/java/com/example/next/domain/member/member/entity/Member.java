@@ -34,6 +34,7 @@ public class Member extends BaseTime {
     private String apiKey;
     @Column(length = 100)
     private String nickname;
+    private String profileImgUrl;
 
     public boolean isAdmin() {
         return username.equals("admin");
@@ -61,5 +62,9 @@ public class Member extends BaseTime {
 
     public void update(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getProfileImgUrlOrDefaultUrl() {
+        return (profileImgUrl == null || profileImgUrl.isBlank()) ? "https://placehold.co/640x640?text=O_O" : this.profileImgUrl;
     }
 }

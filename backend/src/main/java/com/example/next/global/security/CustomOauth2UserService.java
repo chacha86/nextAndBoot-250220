@@ -43,7 +43,7 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
             return new SecurityUser(member);
         }
 
-        Member member = memberService.join(username, "", nickname);
+        Member member = memberService.join(username, "", nickname, profileImage);
 
         return new SecurityUser(member);
     }

@@ -10,9 +10,12 @@ public class MemberDto {
     private long id;
     @NonNull
     private String nickname;
+    @NonNull
+    private String profileImgUrl;
 
     public MemberDto(Member member) {
         this.id = member.getId();
         this.nickname = member.getNickname();
+        this.profileImgUrl = member.getProfileImgUrlOrDefaultUrl();
     }
 }

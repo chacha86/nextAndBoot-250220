@@ -42,7 +42,7 @@ public class ApiV1MemberController {
                 });
 
 
-        Member member = memberService.join(reqBody.username(), reqBody.password(), reqBody.nickname());
+        Member member = memberService.join(reqBody.username(), reqBody.password(), reqBody.nickname(), "");
         return new RsData<>(
                 "201-1",
                 "회원 가입이 완료되었습니다.",
