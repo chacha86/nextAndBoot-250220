@@ -2,9 +2,14 @@ package com.example.next.domain.home.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 @Tag(name = "HomeController", description = "API 서버 홈")
 @Controller
@@ -16,4 +21,20 @@ public class HomeController {
     public String home() {
         return "API 서버에 오신 걸 환영합니다.";
     }
+
+    @GetMapping("/session")
+    @ResponseBody
+    public Map<String, Object> session(HttpSession session) {
+        Map<String, Object> sessionMap = new HashMap<>();
+
+        Enumeration<String> names = session.getAttributeNames();
+
+        while(names.hasMoreElements()) {
+            String name = names.nextElement();
+            sessionMap.put(name, session.getAttribute(name));
+        }
+
+        return sessionMap;
+    }
+
 }
