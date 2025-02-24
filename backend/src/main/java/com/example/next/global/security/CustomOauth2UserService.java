@@ -1,19 +1,25 @@
 package com.example.next.global.security;
 
+import com.example.next.domain.member.member.entity.Member;
+import com.example.next.domain.member.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CustomOauth2UserService extends DefaultOAuth2UserService {
 
+    private final MemberService memberService;
+
+    @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
@@ -27,9 +33,19 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
         String nickname = (String)propeties.get("nickname");
         String profileImage = (String)propeties.get("profile_image");
         String username = providerType + "__" + oauthId;
-        System.out.println("oAuth2User = " + oAuth2User);
 
-        return new SecurityUser(0, username, "", nickname, List.of());
+        Optional<Member> opMember = memberService.findByUsername(username);
+
+        if(opMember.isPresent()) {
+            Member member = opMember.get();
+            member.update(nickname);
+
+            return new SecurityUser(member);
+        }
+
+        Member member = memberService.join(username, "", nickname);
+
+        return new SecurityUser(member);
     }
 
 }

@@ -59,4 +59,7 @@ public class Member extends BaseTime {
         return authorities;
     }
 
+    public void update(String nickname) {
+        this.nickname = nickname;
+    }
 }

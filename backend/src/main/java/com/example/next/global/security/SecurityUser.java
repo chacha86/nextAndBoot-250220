@@ -1,5 +1,6 @@
 package com.example.next.global.security;
 
+import com.example.next.domain.member.member.entity.Member;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -18,6 +19,10 @@ public class SecurityUser extends User implements OAuth2User {
         super(username, password, authorities);
         this.id = id;
         this.nickname = nickname;
+    }
+
+    public SecurityUser(Member member) {
+        this(member.getId(), member.getUsername(), member.getPassword(), member.getNickname(), member.getAuthorities());
     }
 
     @Override
