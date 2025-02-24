@@ -16,5 +16,4 @@ public class HomeController {
     public String home() {
         return "API 서버에 오신 걸 환영합니다.";
     }
-
 }
