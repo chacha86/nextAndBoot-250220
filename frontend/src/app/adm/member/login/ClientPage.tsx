@@ -7,6 +7,7 @@ import {
 } from "@/stores/auth/loginMemberStore";
 import { useRouter } from "next/navigation";
 import { use } from "react";
+import { toast, Toaster } from "sonner";
 
 export default function ClinetPage() {
   const router = useRouter();
@@ -20,12 +21,12 @@ export default function ClinetPage() {
     const password = form.password.value;
 
     if (username.trim().length === 0) {
-      alert("아이디를 입력해주세요.");
+      toast.error("아이디를 입력해주세요.");
       return;
     }
 
     if (password.trim().length === 0) {
-      alert("패스워드를 입력해주세요.");
+      toast.error("패스워드를 입력해주세요.");
       return;
     }
 
@@ -38,9 +39,11 @@ export default function ClinetPage() {
     });
 
     if (response.error) {
-      alert(response.error.msg);
+      toast.error(response.error.msg);
       return;
     }
+
+    toast.success(response.data.msg);
     setLoginMember(response.data.data.item);
     router.replace("/");
   }
@@ -64,6 +67,7 @@ export default function ClinetPage() {
         />
         <input type="submit" value="로그인" />
       </form>
+      <Toaster />
     </>
   );
 }

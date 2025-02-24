@@ -5,6 +5,7 @@ import localFont from "next/font/local";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { ThemeProvider } from "../components/ui/custom/DarkMode";
+import { Toaster } from "sonner";
 
 config.autoAddCss = false;
 
@@ -38,7 +39,10 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ClinetLayout>{children}</ClinetLayout>
+          <ClinetLayout>
+            {children}
+            <Toaster richColors />
+          </ClinetLayout>
         </ThemeProvider>
       </body>
     </html>
