@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -85,7 +86,7 @@ public class ApiV1MemberController {
 
     @Operation(summary = "로그아웃", description = "로그아웃 시 쿠키 삭제")
     @DeleteMapping("/logout")
-    public RsData<Empty> logout() {
+    public RsData<Empty> logout(HttpSession session) {
 
         rq.removeCookie("accessToken");
         rq.removeCookie("apiKey");
