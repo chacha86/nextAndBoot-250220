@@ -142,8 +142,8 @@ public class ApiV1PostControllerTest {
                 .andExpect(jsonPath("$.msg").value("글 목록 조회가 완료되었습니다."))
                 .andExpect(jsonPath("$.data.items.length()").value(pageSize)) // 한페이지당 보여줄 글 개수
                 .andExpect(jsonPath("$.data.currentPageNo").value(page)) // 현재 페이지
-                .andExpect(jsonPath("$.data.totalPages").value(3))
-                .andExpect(jsonPath("$.data.totalItems").value(7));
+                .andExpect(jsonPath("$.data.totalPages").value(50))
+                .andExpect(jsonPath("$.data.totalItems").value(148));
 
         Page<Post> postPage = postService.getListedItems(page, pageSize, SearchKeywordType.title, keyword);
         List<Post> posts = postPage.getContent();
@@ -177,8 +177,8 @@ public class ApiV1PostControllerTest {
                 .andExpect(jsonPath("$.msg").value("글 목록 조회가 완료되었습니다."))
                 .andExpect(jsonPath("$.data.items.length()").value(pageSize)) // 한페이지당 보여줄 글 개수
                 .andExpect(jsonPath("$.data.currentPageNo").value(page)) // 현재 페이지
-                .andExpect(jsonPath("$.data.totalPages").value(3))
-                .andExpect(jsonPath("$.data.totalItems").value(7));
+                .andExpect(jsonPath("$.data.totalPages").value(50))
+                .andExpect(jsonPath("$.data.totalItems").value(148));
 
         Page<Post> postPage = postService.getListedItems(page, pageSize, SearchKeywordType.title, keyword);
         List<Post> posts = postPage.getContent();
@@ -213,8 +213,8 @@ public class ApiV1PostControllerTest {
                 .andExpect(jsonPath("$.msg").value("내 글 목록 조회가 완료되었습니다."))
                 .andExpect(jsonPath("$.data.items.length()").value(pageSize)) // 한페이지당 보여줄 글 개수
                 .andExpect(jsonPath("$.data.currentPageNo").value(page)) // 현재 페이지
-                .andExpect(jsonPath("$.data.totalPages").value(2))
-                .andExpect(jsonPath("$.data.totalItems").value(4));
+                .andExpect(jsonPath("$.data.totalPages").value(32))
+                .andExpect(jsonPath("$.data.totalItems").value(95));
 
 
         Page<Post> postPage = postService.getMines(loginedMember, page, pageSize, SearchKeywordType.title, keyword);

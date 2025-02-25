@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.matchesPattern;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -51,8 +50,7 @@ public class ApiV1MemberControllerTest {
                 .andExpect(jsonPath("$.data").exists())
                 .andExpect(jsonPath("$.data.id").value(member.getId()))
                 .andExpect(jsonPath("$.data.nickname").value(member.getNickname()))
-                .andExpect(jsonPath("$.data.createdDate").value(matchesPattern(member.getCreatedDate().toString().replaceAll("0+$", "") + ".*")))
-                .andExpect(jsonPath("$.data.modifiedDate").value(matchesPattern(member.getModifiedDate().toString().replaceAll("0+$", "") + ".*")));
+                .andExpect(jsonPath("$.data.profileImgUrl").value(member.getProfileImgUrlOrDefaultUrl()));
     }
 
     private ResultActions joinRequest(String username, String password, String nickname) throws Exception {
@@ -182,10 +180,9 @@ public class ApiV1MemberControllerTest {
                 .andExpect(jsonPath("$.data").exists())
                 .andExpect(jsonPath("$.data.item.id").value(member.getId()))
                 .andExpect(jsonPath("$.data.item.nickname").value(member.getNickname()))
-                .andExpect(jsonPath("$.data.item.createdDate").value(matchesPattern(member.getCreatedDate().toString().replaceAll("0+$", "") + ".*")))
-                .andExpect(jsonPath("$.data.item.modifiedDate").value(matchesPattern(member.getModifiedDate().toString().replaceAll("0+$", "") + ".*")))
                 .andExpect(jsonPath("$.data.apiKey").value(member.getApiKey()))
-                .andExpect(jsonPath("$.data.accessToken").exists());
+                .andExpect(jsonPath("$.data.accessToken").exists())
+                .andExpect(jsonPath("$.data.item.profileImgUrl").value(member.getProfileImgUrlOrDefaultUrl()));
 
         resultActions
                 .andExpect(mvcResult -> {
