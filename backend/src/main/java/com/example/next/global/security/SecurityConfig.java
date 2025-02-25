@@ -3,7 +3,6 @@ package com.example.next.global.security;
 import com.example.next.global.app.AppConfig;
 import com.example.next.global.dto.RsData;
 import com.example.next.standard.util.Ut;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +24,7 @@ public class SecurityConfig {
 
     private final CustomAuthenticationFilter customAuthenticationFilter;
     private final CustomAuthorizationRequestResolver customAuthorizationRequestResolver;
-
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -55,16 +54,7 @@ public class SecurityConfig {
                             authorizationEndpoint -> authorizationEndpoint
                                     .authorizationRequestResolver(customAuthorizationRequestResolver)
                     );
-                    oauth2.successHandler((request, response, authentication) -> {
-                        HttpSession session = request.getSession();
-
-                        String redirectUrl = (String)session.getAttribute("redirectUrl");
-                        if(redirectUrl == null) {
-                            redirectUrl = "http://localhost:3000";
-                        }
-                        session.removeAttribute("redirectUrl");
-                        response.sendRedirect(redirectUrl);
-                    });
+                    oauth2.successHandler(customAuthenticationSuccessHandler);
                 })
                 .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(
