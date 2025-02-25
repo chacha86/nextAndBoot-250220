@@ -3,6 +3,7 @@ package com.example.next.global.security;
 import com.example.next.global.app.AppConfig;
 import com.example.next.global.dto.RsData;
 import com.example.next.standard.util.Ut;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final CustomAuthenticationFilter customAuthenticationFilter;
+    private final CustomAuthorizationRequestResolver customAuthorizationRequestResolver;
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -49,8 +51,19 @@ public class SecurityConfig {
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
                 .csrf(csrf -> csrf.disable())
                 .oauth2Login(oauth2 -> {
+                    oauth2.authorizationEndpoint(
+                            authorizationEndpoint -> authorizationEndpoint
+                                    .authorizationRequestResolver(customAuthorizationRequestResolver)
+                    );
                     oauth2.successHandler((request, response, authentication) -> {
-                        response.sendRedirect("http://localhost:3000");
+                        HttpSession session = request.getSession();
+
+                        String redirectUrl = (String)session.getAttribute("redirectUrl");
+                        if(redirectUrl == null) {
+                            redirectUrl = "http://localhost:3000";
+                        }
+                        session.removeAttribute("redirectUrl");
+                        response.sendRedirect(redirectUrl);
                     });
                 })
                 .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
