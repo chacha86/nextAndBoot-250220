@@ -90,7 +90,18 @@ export default function ClinetLayout({
               Home
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel>{loginMember.nickname}</DropdownMenuLabel>
+              <DropdownMenuLabel>
+                <div className="flex gap-2 items-center">
+                  <div className="text-lg">{loginMember.nickname}</div>
+                  <div>
+                    <img
+                      src={loginMember.profileImgUrl}
+                      alt="profileImg"
+                      className="w-7 h-7 rounded-full object-cover"
+                    />
+                  </div>
+                </div>
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <Link href="/">메인</Link>
