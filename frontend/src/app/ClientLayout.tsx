@@ -20,6 +20,7 @@ import {
 } from "@/stores/auth/loginMemberStore";
 import { useRouter } from "next/navigation";
 import { Toaster } from "sonner";
+import { useEffect } from "react";
 
 export default function ClinetLayout({
   children,
@@ -61,6 +62,23 @@ export default function ClinetLayout({
     removeLoginMember();
     router.replace("/");
   }
+
+  async function fetchLoginMember() {
+    const response = await client.GET("/api/v1/members/me", {
+      credentials: "include",
+    });
+
+    if (response.error) {
+      setNoLoginMember();
+      return;
+    }
+
+    setLoginMember(response.data.data);
+  }
+
+  useEffect(() => {
+    fetchLoginMember();
+  }, []);
 
   return (
     <>
