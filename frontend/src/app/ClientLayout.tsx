@@ -8,7 +8,6 @@ import {
   LoginMemberContext,
   useLoginMember,
 } from "@/stores/auth/loginMemberStore";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function ClinetLayout({
@@ -16,7 +15,7 @@ export default function ClinetLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const router = useRouter();
+
   const {
     setLoginMember,
     isLogin,

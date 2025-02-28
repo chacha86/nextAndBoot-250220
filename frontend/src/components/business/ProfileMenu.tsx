@@ -16,8 +16,7 @@ import { use } from "react";
 
 export default function HomeMenu() {
   const router = useRouter();
-  const { isLogin, isAdmin, loginMember, removeLoginMember } =
-    use(LoginMemberContext);
+  const { isLogin, loginMember, removeLoginMember } = use(LoginMemberContext);
 
   async function handleLogout(e: React.MouseEvent<HTMLAnchorElement>) {
     e.preventDefault();

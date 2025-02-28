@@ -1,12 +1,12 @@
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
+import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 import client from "./lib/backend/client";
-import { cookies } from "next/headers";
-import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 export async function middleware(request: NextRequest) {
   const myCookies = await cookies();
   const accessToken = myCookies.get("accessToken");
-  const { isLogin, isExpired, payload } = parseAccessToken(accessToken);
+  const { isLogin, isExpired } = parseAccessToken(accessToken);
 
   if (isLogin && isExpired) {
     return refreshAccessToken();
@@ -48,7 +48,7 @@ function parseAccessToken(accessToken: RequestCookie | undefined) {
     }
   }
 
-  let isLogin = payload !== null;
+  const isLogin = payload !== null;
 
   return { isLogin, isExpired, payload };
 }

@@ -4,17 +4,15 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LoginMemberContext } from "@/stores/auth/loginMemberStore";
-import { House, NotebookPen } from "lucide-react";
+import { NotebookPen } from "lucide-react";
 import Link from "next/link";
 import { use } from "react";
 
 export default function HomeMenu() {
-  const { isLogin, loginMember } = use(LoginMemberContext);
+  const { isLogin } = use(LoginMemberContext);
 
   return (
     <DropdownMenu>

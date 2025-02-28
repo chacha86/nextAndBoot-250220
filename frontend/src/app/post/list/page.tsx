@@ -29,7 +29,12 @@ export default async function Page({
     },
   });
 
-  const rsData = response.data!!;
+  if (response.error) {
+    alert(response.error.msg);
+    return;
+  }
+
+  const rsData = response.data;
 
   return (
     <ClinetPage
