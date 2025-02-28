@@ -96,9 +96,7 @@ export default function ClinetLayout({
           {children}
         </div>
         <footer className="flex justify-center gap-7 p-4">
-          <Link href="/adm">관리자</Link>
-          <Link href="/adm/member/login">관리자 로그인</Link>
-          <Link href="/member/me">내 정보</Link>
+          @Copywrite 2025
         </footer>
       </LoginMemberContext.Provider>
     </>
