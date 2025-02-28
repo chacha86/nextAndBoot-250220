@@ -21,6 +21,9 @@ import {
 import { useRouter } from "next/navigation";
 import { Toaster } from "sonner";
 import { useEffect } from "react";
+import HomeMenu from "@/components/business/HomeMenu";
+import PostMenu from "@/components/business/PostMenu";
+import ProfileMenu from "@/components/business/ProfileMenu";
 
 export default function ClinetLayout({
   children,
@@ -83,66 +86,10 @@ export default function ClinetLayout({
   return (
     <>
       <LoginMemberContext.Provider value={loginMemberContextValue}>
-        <header className="flex justify-end gap-3 px-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <FontAwesomeIcon icon={faHouse} />
-              Home
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {isLogin && (
-                <DropdownMenuLabel>
-                  <div className="flex gap-2 items-center">
-                    <div className="text-lg">{loginMember.nickname}</div>
-                    <div>
-                      <img
-                        src={loginMember.profileImgUrl}
-                        alt="profileImg"
-                        className="w-7 h-7 rounded-full object-cover"
-                      />
-                    </div>
-                  </div>
-                </DropdownMenuLabel>
-              )}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Link href="/">메인</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/about">소개</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/post/list">글 목록</Link>
-              </DropdownMenuItem>
-              {isLogin && (
-                <DropdownMenuItem>
-                  <Link href="/post/write">글 작성</Link>
-                </DropdownMenuItem>
-              )}
-              {!isLogin && (
-                <DropdownMenuItem>
-                  <Link href="/adm/member/login">관리자 로그인</Link>
-                </DropdownMenuItem>
-              )}
-              {!isLogin && (
-                <DropdownMenuItem>
-                  <Link href="/member/join">회원 가입</Link>
-                </DropdownMenuItem>
-              )}
-              {isLogin && (
-                <DropdownMenuItem>
-                  <Link href="" onClick={handleLogout}>
-                    로그아웃
-                  </Link>
-                </DropdownMenuItem>
-              )}
-              {isLogin && (
-                <DropdownMenuItem>
-                  <Link href="/member/me">내정보</Link>
-                </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <header className="flex items-center justify-end gap-3 px-4">
+          <HomeMenu />
+          <PostMenu />
+          <ProfileMenu />
           <ModeToggle />
         </header>
         <div className="flex flex-col flex-grow justify-center items-center">
