@@ -24,6 +24,8 @@ import { useEffect } from "react";
 import HomeMenu from "@/components/business/HomeMenu";
 import PostMenu from "@/components/business/PostMenu";
 import ProfileMenu from "@/components/business/ProfileMenu";
+import WideHeader from "@/components/business/WideHeader";
+import NarrowHeader from "@/components/business/NarrowHeader";
 
 export default function ClinetLayout({
   children,
@@ -86,11 +88,9 @@ export default function ClinetLayout({
   return (
     <>
       <LoginMemberContext.Provider value={loginMemberContextValue}>
-        <header className="flex items-center justify-end gap-3 px-4">
-          <HomeMenu />
-          <PostMenu />
-          <ProfileMenu />
-          <ModeToggle />
+        <header>
+          <WideHeader className="flex items-center justify-end gap-3 px-4 hidden md:flex" />
+          <NarrowHeader className="flex items-center justify-end gap-3 px-4 flex md:hidden" />
         </header>
         <div className="flex flex-col flex-grow justify-center items-center">
           {children}
