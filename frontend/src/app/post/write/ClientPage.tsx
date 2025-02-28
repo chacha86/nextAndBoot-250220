@@ -37,12 +37,14 @@ export default function ClinetPage() {
     });
 
     if (response.error) {
+      console.log("11111111111111");
+      console.log(response);
       alert(response.error.msg);
       return;
     }
 
     const post = response.data.data;
-
+    console.log("222");
     // 목록으로 이동, 내가 방금 작성한 글 상세 페이지 이동 => 리액트 방식의 페이지 이동
     router.push(`/post/${post.id}`);
   }

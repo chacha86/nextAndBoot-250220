@@ -49,7 +49,10 @@ export default function LoginForm() {
 
   return (
     <>
-      <form onSubmit={login} className="flex flex-col w-1/4 gap-3">
+      <form
+        onSubmit={login}
+        className="flex flex-col w-full max-w-sm gap-3 px-2"
+      >
         <div className="flex flex-col gap-2">
           <label className="font-medium">아이디</label>
           <Input
