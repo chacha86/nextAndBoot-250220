@@ -27,6 +27,7 @@ function createEmptyMember(): Member {
   return {
     id: 0,
     nickname: "",
+    profileImgUrl: ""
   };
 }
 

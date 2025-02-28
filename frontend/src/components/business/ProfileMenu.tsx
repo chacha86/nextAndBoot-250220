@@ -7,13 +7,32 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import client from "@/lib/backend/client";
 import { LoginMemberContext } from "@/stores/auth/loginMemberStore";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { use } from "react";
 
 export default function HomeMenu() {
-  const { isLogin, isAdmin, loginMember } = use(LoginMemberContext);
+  const router = useRouter();
+  const { isLogin, isAdmin, loginMember, removeLoginMember } =
+    use(LoginMemberContext);
+
+  async function handleLogout(e: React.MouseEvent<HTMLAnchorElement>) {
+    e.preventDefault();
+    const response = await client.DELETE("/api/v1/members/logout", {
+      credentials: "include",
+    });
+
+    if (response.error) {
+      alert(response.error.msg);
+      return;
+    }
+
+    removeLoginMember();
+    router.replace("/");
+  }
 
   return (
     <DropdownMenu>
@@ -42,7 +61,7 @@ export default function HomeMenu() {
           </DropdownMenuLabel>
         )}
 
-        {!isAdmin && (
+        {!isLogin && (
           <DropdownMenuItem>
             <Link href="/adm/member/login">관리자 로그인</Link>
           </DropdownMenuItem>
@@ -54,7 +73,9 @@ export default function HomeMenu() {
         )}
         {isLogin && (
           <DropdownMenuItem>
-            <Link href="">로그아웃</Link>
+            <Link href="" onClick={handleLogout}>
+              로그아웃
+            </Link>
           </DropdownMenuItem>
         )}
         {isLogin && (
