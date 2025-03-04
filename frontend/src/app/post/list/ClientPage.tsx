@@ -30,6 +30,23 @@ export default function ClinetPage({
 }) {
   const router = useRouter();
   const pageDto = rsData.data;
+
+  const range = (start: number, end: number): number[] => {
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  };
+
+  const startPageNo = 1;
+  const blockSize = 5;
+  const endPageNo = pageDto.totalPages;
+  let startPageNoOfBlock = Number(page) - Math.floor(blockSize / 2);
+  let endPageNoOfBlock = Number(page) + Math.floor(blockSize / 2);
+
+  startPageNoOfBlock =
+    startPageNoOfBlock <= startPageNo ? startPageNo + 1 : startPageNoOfBlock;
+
+  endPageNoOfBlock =
+    endPageNoOfBlock >= endPageNo ? endPageNo - 1 : endPageNoOfBlock;
+
   return (
     <div className="container p-4 mx-auto">
       <form
@@ -95,7 +112,7 @@ export default function ClinetPage({
             <PaginationItem>
               <PaginationEllipsis />
             </PaginationItem>
-            {Array.from({ length: 3 }, (_, i) => page - 1 + i).map((pageNo) => {
+            {range(startPageNoOfBlock, endPageNoOfBlock).map((pageNo) => {
               return (
                 <PaginationItem key={pageNo}>
                   <PaginationLink
