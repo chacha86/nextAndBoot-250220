@@ -7,6 +7,16 @@ import { components } from "@/lib/backend/apiV1/schema";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+
 export default function ClinetPage({
   rsData,
   keywordType,
@@ -24,6 +34,33 @@ export default function ClinetPage({
   const pageDto = rsData.data;
   return (
     <div className="container p-4 mx-auto">
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious href="#" />
+          </PaginationItem>
+          {Array.from({ length: pageDto.totalPages }, (_, i) => i + 1).map(
+            (pageNo) => {
+              return (
+                <PaginationItem key={pageNo}>
+                  <PaginationLink
+                    href={`/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=${pageNo}`}
+                  >
+                    {pageNo}
+                  </PaginationLink>
+                </PaginationItem>
+              );
+            }
+          )}
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationNext href="#" />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+
       <form
         onSubmit={(e) => {
           e.preventDefault();
