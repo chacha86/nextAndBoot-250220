@@ -1,7 +1,7 @@
 "use client";
 
-import ComboboxDemo from "@/components/ui/custom/Combobox";
 import { Button } from "@/components/ui/button";
+import ComboboxDemo from "@/components/ui/custom/Combobox";
 import { Input } from "@/components/ui/input";
 import { components } from "@/lib/backend/apiV1/schema";
 import Link from "next/link";
@@ -23,16 +23,7 @@ export default function ClinetPage({
   const router = useRouter();
   const pageDto = rsData.data;
   return (
-    <div className="w-1/2">
-      <h1>글 목록</h1>
-      <div>응답 코드 : {rsData.code}</div>
-      <div>결과 메시지 : {rsData.msg}</div>
-      <div>totalPages : {pageDto.totalPages}</div>
-      <div>totalItems : {pageDto.totalItems}</div>
-      <div>currentPageNo : {pageDto.currentPageNo}</div>
-      <div>pageSize : {pageDto.pageSize}</div>
-      <hr />
-
+    <div className="container p-4 mx-auto">
       <form
         onSubmit={(e) => {
           e.preventDefault();
