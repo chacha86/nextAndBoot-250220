@@ -13,8 +13,6 @@ import {
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
 } from "@/components/ui/pagination";
 
 export default function ClinetPage({
@@ -34,33 +32,6 @@ export default function ClinetPage({
   const pageDto = rsData.data;
   return (
     <div className="container p-4 mx-auto">
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious href="#" />
-          </PaginationItem>
-          {Array.from({ length: pageDto.totalPages }, (_, i) => i + 1).map(
-            (pageNo) => {
-              return (
-                <PaginationItem key={pageNo}>
-                  <PaginationLink
-                    href={`/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=${pageNo}`}
-                  >
-                    {pageNo}
-                  </PaginationLink>
-                </PaginationItem>
-              );
-            }
-          )}
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext href="#" />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
-
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -112,19 +83,42 @@ export default function ClinetPage({
         />
       </form>
       <div className="flex gap-3">
-        {Array.from({ length: pageDto.totalPages }, (_, i) => i + 1).map(
-          (pageNo) => {
-            return (
-              <Link
-                key={pageNo}
-                className={pageNo == page ? `text-red-500` : `text-blue-500`}
-                href={`/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=${pageNo}`}
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationLink
+                href={`/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=1`}
               >
-                {pageNo}
-              </Link>
-            );
-          }
-        )}
+                1
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            {Array.from({ length: 3 }, (_, i) => page - 1 + i).map((pageNo) => {
+              return (
+                <PaginationItem key={pageNo}>
+                  <PaginationLink
+                    isActive={pageNo == page}
+                    href={`/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=${pageNo}`}
+                  >
+                    {pageNo}
+                  </PaginationLink>
+                </PaginationItem>
+              );
+            })}
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                href={`/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=${pageDto.totalPages}`}
+              >
+                {pageDto.totalPages}
+              </PaginationLink>
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
       <ul>
         {pageDto.items.map((item) => {
