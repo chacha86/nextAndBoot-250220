@@ -23,29 +23,13 @@ export default function ClinetPage({
   page,
 }: {
   rsData: components["schemas"]["RsDataPageDto"];
-  keywordType?: "title" | "content";
+  keywordType: "title" | "content";
   keyword: string;
   pageSize: number;
   page: number;
 }) {
   const router = useRouter();
   const pageDto = rsData.data;
-
-  const range = (start: number, end: number): number[] => {
-    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-  };
-
-  const startPageNo = 1;
-  const blockSize = 5;
-  const endPageNo = pageDto.totalPages;
-  let startPageNoOfBlock = Number(page) - Math.floor(blockSize / 2);
-  let endPageNoOfBlock = Number(page) + Math.floor(blockSize / 2);
-
-  startPageNoOfBlock =
-    startPageNoOfBlock <= startPageNo ? startPageNo + 1 : startPageNoOfBlock;
-
-  endPageNoOfBlock =
-    endPageNoOfBlock >= endPageNo ? endPageNo - 1 : endPageNoOfBlock;
 
   return (
     <div className="container p-4 mx-auto">
@@ -99,44 +83,24 @@ export default function ClinetPage({
           title="행 개수"
         />
       </form>
-      <div className="flex gap-3">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationLink
-                href={`/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=1`}
-              >
-                1
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            {range(startPageNoOfBlock, endPageNoOfBlock).map((pageNo) => {
-              return (
-                <PaginationItem key={pageNo}>
-                  <PaginationLink
-                    isActive={pageNo == page}
-                    href={`/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=${pageNo}`}
-                  >
-                    {pageNo}
-                  </PaginationLink>
-                </PaginationItem>
-              );
-            })}
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                href={`/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=${pageDto.totalPages}`}
-              >
-                {pageDto.totalPages}
-              </PaginationLink>
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+      <CustomPagination
+        totalPages={pageDto.totalPages}
+        keywordType={keywordType}
+        keyword={keyword}
+        pageSize={pageSize}
+        page={page}
+        pageArmSize={1}
+        className="flex md:hidden"
+      />
+      <CustomPagination
+        totalPages={pageDto.totalPages}
+        keywordType={keywordType}
+        keyword={keyword}
+        pageSize={pageSize}
+        page={page}
+        pageArmSize={3}
+        className="hidden md:flex"
+      />
       <ul>
         {pageDto.items.map((item) => {
           return (
@@ -153,6 +117,84 @@ export default function ClinetPage({
           );
         })}
       </ul>
+    </div>
+  );
+}
+
+function CustomPagination({
+  totalPages,
+  keywordType,
+  keyword,
+  pageSize,
+  page,
+  pageArmSize,
+  className,
+}: {
+  totalPages: number;
+  keywordType: "title" | "content";
+  keyword: string;
+  pageSize: number;
+  page: number;
+  pageArmSize: number;
+  className?: string;
+}) {
+  const range = (start: number, end: number): number[] => {
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  };
+
+  const startPageNo = 1;
+  const endPageNo = totalPages;
+  let startPageNoOfBlock = Number(page) - pageArmSize;
+  let endPageNoOfBlock = Number(page) + pageArmSize;
+
+  startPageNoOfBlock =
+    startPageNoOfBlock <= startPageNo ? startPageNo + 1 : startPageNoOfBlock;
+
+  endPageNoOfBlock =
+    endPageNoOfBlock >= endPageNo ? endPageNo - 1 : endPageNoOfBlock;
+
+  return (
+    <div className={className}>
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationLink
+              href={`/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=1`}
+            >
+              1
+            </PaginationLink>
+          </PaginationItem>
+          {page - startPageNo > pageArmSize + 1 && (
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          )}
+          {range(startPageNoOfBlock, endPageNoOfBlock).map((pageNo) => {
+            return (
+              <PaginationItem key={pageNo}>
+                <PaginationLink
+                  isActive={pageNo == page}
+                  href={`/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=${pageNo}`}
+                >
+                  {pageNo}
+                </PaginationLink>
+              </PaginationItem>
+            );
+          })}
+          {endPageNo - page > pageArmSize + 1 && (
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          )}
+          <PaginationItem>
+            <PaginationLink
+              href={`/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=${totalPages}`}
+            >
+              {totalPages}
+            </PaginationLink>
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 }
