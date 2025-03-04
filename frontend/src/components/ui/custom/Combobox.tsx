@@ -21,12 +21,16 @@ import { cn } from "@/lib/utils";
 export function Combobox({
   itemList,
   title,
+  handleChange,
+  selectedValue,
 }: {
   itemList: { value: string; label: string }[];
   title: string;
+  handleChange?: (value: string) => void;
+  selectedValue: string;
 }) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(selectedValue ?? "");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -35,13 +39,13 @@ export function Combobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[100px] justify-between"
+          className="justify-between"
         >
           {value ? itemList.find((item) => item.value === value)?.label : title}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[100px] p-0">
+      <PopoverContent className="p-0">
         <Command>
           <CommandList>
             <CommandEmpty>No framework found.</CommandEmpty>
@@ -53,6 +57,7 @@ export function Combobox({
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue);
                     setOpen(false);
+                    handleChange?.(currentValue);
                   }}
                 >
                   {item.label}

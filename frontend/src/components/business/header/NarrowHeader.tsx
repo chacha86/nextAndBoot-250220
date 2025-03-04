@@ -1,3 +1,4 @@
+import ProfileMenu from "@/components/business/header/ProfileMenu";
 import {
   Drawer,
   DrawerClose,
@@ -15,7 +16,6 @@ import {
   NotebookText,
 } from "lucide-react";
 import Link from "next/link";
-import ProfileMenu from "./ProfileMenu";
 
 export default function NarrowHeader({ className }: { className: string }) {
   return (

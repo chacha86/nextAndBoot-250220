@@ -1,4 +1,4 @@
-import { ModeToggle } from "../ui/custom/DarkModeToggle";
+import { ModeToggle } from "@/components/ui/custom/DarkModeToggle";
 import HomeMenu from "./HomeMenu";
 import PostMenu from "./PostMenu";
 import ProfileMenu from "./ProfileMenu";

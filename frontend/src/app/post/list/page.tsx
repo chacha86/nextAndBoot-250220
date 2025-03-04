@@ -30,8 +30,7 @@ export default async function Page({
   });
 
   if (response.error) {
-    alert(response.error.msg);
-    return;
+    return <div>{response.error.msg}</div>;
   }
 
   const rsData = response.data;

@@ -2,8 +2,9 @@
 
 import client from "@/lib/backend/client";
 
-import NarrowHeader from "@/components/business/NarrowHeader";
-import WideHeader from "@/components/business/WideHeader";
+import NarrowHeader from "@/components/business/header/NarrowHeader";
+
+import WideHeader from "@/components/business/header/WideHeader";
 import {
   LoginMemberContext,
   useLoginMember,
