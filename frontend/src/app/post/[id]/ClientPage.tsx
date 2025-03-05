@@ -57,7 +57,7 @@ export default function ClinetPage({
             <div className="flex items-center gap-2">
               <Image
                 className="w-10 h-10 rounded-full"
-                src="https://placehold.co/640x640?text=O_O"
+                src={post.authorProfileImgUrl}
                 alt="프로필 이미지"
                 width={80}
                 height={80}

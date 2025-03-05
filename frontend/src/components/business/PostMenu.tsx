@@ -30,6 +30,11 @@ export default function HomeMenu() {
             <Link href="/post/write">글 작성</Link>
           </DropdownMenuItem>
         )}
+        {isLogin && (
+          <DropdownMenuItem>
+            <Link href="/post/list/me">내 글</Link>
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
