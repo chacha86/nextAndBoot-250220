@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.stream.Collectors;
 
@@ -51,4 +52,33 @@ public class GlobalExceptionHandler {
                 );
     }
 
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    public ResponseEntity<RsData<Void>> MethodArgumentTypeMismatchExceptionHandle(MethodArgumentTypeMismatchException ex) {
+        
+        if(AppConfig.isNotProd()) ex.printStackTrace();
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        new RsData<>(
+                                "400-1",
+                                "잘못된 요청입니다."
+                        )
+                );
+    }
+
+    @ExceptionHandler({RuntimeException.class})
+    public ResponseEntity<RsData<Void>> RuntimeException(RuntimeException ex) {
+
+        if(AppConfig.isNotProd()) ex.printStackTrace();
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(
+                        new RsData<>(
+                                "500",
+                                "에러 발생"
+                        )
+                );
+    }
 }
