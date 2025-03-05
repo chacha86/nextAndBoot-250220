@@ -1,11 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { components } from "@/lib/backend/apiV1/schema";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -21,6 +20,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import {
   Pagination,
   PaginationContent,
@@ -35,7 +35,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { Search } from "lucide-react";
+import { useState } from "react";
 
 export default function ClinetPage({
   rsData,
@@ -55,73 +57,24 @@ export default function ClinetPage({
 
   return (
     <div className="container p-4 mx-auto">
-      <Dialog>
-        <DialogTrigger className="flex gap-4 items-center">
-          <Search />
-          <Input
-            type="text"
-            placeholder="검색어 입력"
-            defaultValue={keyword}
-            readOnly
-            className="hover:cursor-pointer"
-          />
-        </DialogTrigger>
-        <DialogContent className="flex flex-col items-center">
-          <DialogHeader>
-            <DialogTitle>Search</DialogTitle>
-            <DialogDescription className="sr-only">
-              Search for posts by title or content.
-            </DialogDescription>
-          </DialogHeader>
-
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-
-              const formData = new FormData(e.target as HTMLFormElement);
-              const searchKeyword = formData.get("keyword") as string;
-              const searchKeywordType = formData.get("keywordType") as string;
-              const page = 1;
-              const pageSize = formData.get("pageSize") as string;
-
+      <div className="flex justify-between">
+        <SearchDialog
+          keyword={keyword}
+          keywordType={keywordType}
+          pageSize={pageSize}
+        />
+        <div className="flex gap-4 items-center">
+          <p className="text-gray-400">총 {pageDto.totalItems}개의 게시글</p>
+          <PageSizeSelect
+            pageSize={pageSize}
+            onValueChangeHandler={(value) => {
               router.push(
-                `/post/list?keywordType=${searchKeywordType}&keyword=${searchKeyword}&pageSize=${pageSize}&page=${page}`
+                `/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${value}&page=${page}`
               );
             }}
-          >
-            <div className="flex flex-col gap-3 py-3">
-              <div className="flex gap-3">
-                <Select name="keywordType" defaultValue={keywordType}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="검색 대상" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="title">제목</SelectItem>
-                    <SelectItem value="content">내용</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Select name="pageSize" defaultValue={String(pageSize)}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="행 개수" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="10">10개씩 보기</SelectItem>
-                    <SelectItem value="20">20개씩 보기</SelectItem>
-                    <SelectItem value="30">30개씩 보기</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <Input
-                type="text"
-                placeholder="검색어 입력"
-                name="keyword"
-                defaultValue={keyword}
-              />
-              <Button>검색</Button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
+          />
+        </div>
+      </div>
       <CustomPagination
         totalPages={pageDto.totalPages}
         keywordType={keywordType}
@@ -178,6 +131,109 @@ export default function ClinetPage({
         })}
       </ul>
     </div>
+  );
+}
+
+function SearchDialog({
+  keyword,
+  keywordType,
+  pageSize,
+}: {
+  keyword: string;
+  keywordType: "title" | "content";
+  pageSize: number;
+}) {
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger className="flex gap-4 items-center">
+        <Search />
+        <Input
+          type="text"
+          placeholder="검색어 입력"
+          defaultValue={
+            {
+              title: "제목 : ",
+              content: "내용 : ",
+            }[keywordType] + keyword
+          }
+          readOnly
+          className="hover:cursor-pointer text-gray-400"
+        />
+      </DialogTrigger>
+      <DialogContent className="flex flex-col items-center">
+        <DialogHeader>
+          <DialogTitle>Search</DialogTitle>
+          <DialogDescription className="sr-only">
+            Search for posts by title or content.
+          </DialogDescription>
+        </DialogHeader>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target as HTMLFormElement);
+            const searchKeyword = formData.get("keyword") as string;
+            const searchKeywordType = formData.get("keywordType") as string;
+            const page = 1;
+            const pageSize = formData.get("pageSize") as string;
+
+            router.push(
+              `/post/list?keywordType=${searchKeywordType}&keyword=${searchKeyword}&pageSize=${pageSize}&page=${page}`
+            );
+          }}
+        >
+          <div className="flex flex-col gap-3 py-3">
+            <div className="flex gap-3">
+              <Select name="keywordType" defaultValue={keywordType}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="검색 대상" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="title">제목</SelectItem>
+                  <SelectItem value="content">내용</SelectItem>
+                </SelectContent>
+              </Select>
+              <PageSizeSelect pageSize={pageSize} />
+            </div>
+            <Input
+              type="text"
+              placeholder="검색어 입력"
+              name="keyword"
+              defaultValue={keyword}
+            />
+            <Button onClick={() => setOpen(false)}>검색</Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function PageSizeSelect({
+  pageSize,
+  onValueChangeHandler,
+}: {
+  pageSize: number;
+  onValueChangeHandler?: (value: string) => void;
+}) {
+  return (
+    <Select
+      name="pageSize"
+      defaultValue={String(pageSize)}
+      onValueChange={onValueChangeHandler}
+    >
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="행 개수" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="10">10개씩 보기</SelectItem>
+        <SelectItem value="20">20개씩 보기</SelectItem>
+        <SelectItem value="30">30개씩 보기</SelectItem>
+      </SelectContent>
+    </Select>
   );
 }
 
