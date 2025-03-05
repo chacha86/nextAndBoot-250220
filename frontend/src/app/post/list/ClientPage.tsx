@@ -8,6 +8,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
@@ -101,17 +108,35 @@ export default function ClinetPage({
         pageArmSize={3}
         className="hidden md:flex"
       />
-      <ul>
+      <ul className="flex flex-wrap gap-4 py-4">
         {pageDto.items.map((item) => {
           return (
-            <li className="border-2 border-red-500 my-2 p-2" key={item.id}>
+            <li key={item.id} className="w-[calc(100%/3-1rem)]">
               <Link href={`/post/${item.id}`}>
-                <div>id : {item.id}</div>
-                <div>title : {item.title}</div>
-                <div>authorId : {item.authorId}</div>
-                <div>authorName : {item.authorName}</div>
-                <div>published : {`${item.published}`}</div>
-                <div>listed : {`${item.listed}`}</div>
+                <Card className="hover:bg-gray-100">
+                  <CardHeader>
+                    <CardTitle>{item.title}</CardTitle>
+                    <CardDescription className="sr-only">
+                      {item.title}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p>작성자 : {item.authorName}</p>
+                    <p>
+                      작성일 :{" "}
+                      {new Intl.DateTimeFormat("ko-KR", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hourCycle: "h23",
+                      })
+                        .format(new Date(item.createdDate))
+                        .replace(/\. /g, ". ")}
+                    </p>
+                  </CardContent>
+                </Card>
               </Link>
             </li>
           );
