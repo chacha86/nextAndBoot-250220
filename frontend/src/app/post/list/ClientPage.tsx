@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import ComboboxDemo from "@/components/ui/custom/Combobox";
 import { Input } from "@/components/ui/input";
 import { components } from "@/lib/backend/apiV1/schema";
 import Link from "next/link";
@@ -15,12 +14,28 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
 } from "@/components/ui/pagination";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Search } from "lucide-react";
 
 export default function ClinetPage({
   rsData,
@@ -40,56 +55,73 @@ export default function ClinetPage({
 
   return (
     <div className="container p-4 mx-auto">
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-
-          const formData = new FormData(e.target as HTMLFormElement);
-          const searchKeyword = formData.get("keyword") as string;
-          const searchKeywordType = formData.get("keywordType") as string;
-          const page = 1;
-          const pageSize = formData.get("pageSize") as string;
-
-          router.push(
-            `/post/list?keywordType=${searchKeywordType}&keyword=${searchKeyword}&pageSize=${pageSize}&page=${page}`
-          );
-        }}
-      >
-        {/* <select name="keywordType" defaultValue={keywordType}>
-          <option value="title">제목</option>
-          <option value="content">내용</option>
-        </select> */}
-
-        <div className="flex gap-3 py-3">
-          <ComboboxDemo
-            itemList={[
-              { value: "title", label: "제목" },
-              { value: "content", label: "내용" },
-            ]}
-            title="검색 대상"
-          />
+      <Dialog>
+        <DialogTrigger className="flex gap-4 items-center">
+          <Search />
           <Input
             type="text"
             placeholder="검색어 입력"
-            name="keyword"
             defaultValue={keyword}
-            className="w-[200px]"
+            readOnly
+            className="hover:cursor-pointer"
           />
-          <Button>검색</Button>
-        </div>
+        </DialogTrigger>
+        <DialogContent className="flex flex-col items-center">
+          <DialogHeader>
+            <DialogTitle>Search</DialogTitle>
+            <DialogDescription className="sr-only">
+              Search for posts by title or content.
+            </DialogDescription>
+          </DialogHeader>
 
-        <label className="ml-5" htmlFor="">
-          페이지당 행 개수 :
-        </label>
-        <ComboboxDemo
-          itemList={[
-            { value: "10", label: "10" },
-            { value: "30", label: "20" },
-            { value: "50", label: "30" },
-          ]}
-          title="행 개수"
-        />
-      </form>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+
+              const formData = new FormData(e.target as HTMLFormElement);
+              const searchKeyword = formData.get("keyword") as string;
+              const searchKeywordType = formData.get("keywordType") as string;
+              const page = 1;
+              const pageSize = formData.get("pageSize") as string;
+
+              router.push(
+                `/post/list?keywordType=${searchKeywordType}&keyword=${searchKeyword}&pageSize=${pageSize}&page=${page}`
+              );
+            }}
+          >
+            <div className="flex flex-col gap-3 py-3">
+              <div className="flex gap-3">
+                <Select name="keywordType" defaultValue={keywordType}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="검색 대상" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="title">제목</SelectItem>
+                    <SelectItem value="content">내용</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select name="pageSize" defaultValue={String(pageSize)}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="행 개수" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="10">10개씩 보기</SelectItem>
+                    <SelectItem value="20">20개씩 보기</SelectItem>
+                    <SelectItem value="30">30개씩 보기</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <Input
+                type="text"
+                placeholder="검색어 입력"
+                name="keyword"
+                defaultValue={keyword}
+              />
+              <Button>검색</Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
       <CustomPagination
         totalPages={pageDto.totalPages}
         keywordType={keywordType}
@@ -214,13 +246,15 @@ function CustomPagination({
               <PaginationEllipsis />
             </PaginationItem>
           )}
-          <PaginationItem>
-            <PaginationLink
-              href={`/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=${totalPages}`}
-            >
-              {totalPages}
-            </PaginationLink>
-          </PaginationItem>
+          {endPageNo != startPageNo && (
+            <PaginationItem>
+              <PaginationLink
+                href={`/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=${totalPages}`}
+              >
+                {totalPages}
+              </PaginationLink>
+            </PaginationItem>
+          )}
         </PaginationContent>
       </Pagination>
     </div>
