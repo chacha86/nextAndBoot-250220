@@ -64,7 +64,7 @@ export default function ClinetPage({
           pageSize={pageSize}
         />
         <div className="flex gap-4 items-center">
-          <p className="text-gray-400">총 {pageDto.totalItems}개의 게시글</p>
+          <p className="text-gray-400">총 {pageDto.totalItems}개</p>
           <PageSizeSelect
             pageSize={pageSize}
             onValueChangeHandler={(value) => {
@@ -168,7 +168,7 @@ function SearchDialog({
             }[keywordType] + keyword
           }
           readOnly
-          className="hover:cursor-pointer text-gray-400"
+          className="hover:cursor-pointer text-gray-400 md:block hidden"
         />
       </DialogTrigger>
       <DialogContent className="flex flex-col items-center">
