@@ -112,7 +112,9 @@ public class ApiV1PostController {
         }
 
         PostWithContentDto postWithContentDto = new PostWithContentDto(post);
-        postWithContentDto.setCanActorHandle(post.getHandleAuthority(rq.getActor()));
+        if(rq.isLogin()) {
+            postWithContentDto.setCanActorHandle(post.getHandleAuthority(rq.getActor()));
+        }
 
         return new RsData<>(
                 "200-1",

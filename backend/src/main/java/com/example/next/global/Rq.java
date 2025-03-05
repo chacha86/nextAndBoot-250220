@@ -111,4 +111,14 @@ public class Rq {
 
         response.addCookie(cookie);
     }
+
+    public boolean isLogin() {
+        try {
+            getActor();
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
+    }
 }

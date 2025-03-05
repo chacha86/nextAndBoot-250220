@@ -25,6 +25,8 @@ public class PostWithContentDto {
     @NonNull
     private String authorName;
     @NonNull
+    private String authorProfileImgUrl;
+    @NonNull
     private boolean published;
     @NonNull
     private boolean listed;
@@ -42,5 +44,6 @@ public class PostWithContentDto {
         this.authorName = post.getAuthor().getNickname();
         this.published = post.isPublished();
         this.listed = post.isListed();
+        this.authorProfileImgUrl = post.getAuthor().getProfileImgUrlOrDefaultUrl();
     }
 }
