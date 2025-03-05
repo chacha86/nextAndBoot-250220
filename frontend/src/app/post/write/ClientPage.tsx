@@ -1,5 +1,9 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import client from "@/lib/backend/client";
 import { useRouter } from "next/navigation";
 
@@ -48,27 +52,31 @@ export default function ClinetPage() {
   }
 
   return (
-    <>
-      <h1>글 작성 페이지</h1>
+    <div className="container p-4 mx-auto">
+      <h1 className="text-2xl font-bold text-center">글 작성 페이지</h1>
       <hr />
-      <form onSubmit={write} className="flex flex-col w-1/4 gap-3">
-        <div className="flex gap-3">
+      <form onSubmit={write} className="flex flex-col gap-3 py-4">
+        <div className="flex items-center gap-3">
           <label>공개 여부 : </label>
-          <input type="checkbox" name="published" />
+          <Checkbox name="published" />
         </div>
-        <div className="flex gap-3">
+        <div className="flex items-center gap-3">
           <label>검색 여부 : </label>
-          <input type="checkbox" name="listed" />
+          <Checkbox name="listed" />
         </div>
-        <input
+        <Input
           type="text"
           name="_title"
           placeholder="제목 입력"
           className="border-2 border-black"
         />
-        <textarea name="content" className="border-2 border-black"></textarea>
-        <input type="submit" value="등록" />
+        <Textarea
+          name="content"
+          placeholder="내용 입력"
+          className="h-[calc(100dvh-300px)]"
+        />
+        <Button type="submit">등록</Button>
       </form>
-    </>
+    </div>
   );
 }
