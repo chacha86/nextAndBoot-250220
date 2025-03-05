@@ -1,3 +1,4 @@
+import ErrorPage from "@/app/post/list/ErrorPage";
 import client from "@/lib/backend/client";
 import ClinetPage from "./ClientPage";
 
@@ -30,8 +31,7 @@ export default async function Page({
   });
 
   if (response.error) {
-    alert(response.error.msg);
-    return;
+    return <ErrorPage msg={response.error.msg} />;
   }
 
   const rsData = response.data;

@@ -111,7 +111,10 @@ export default function ClinetPage({
       <ul className="flex flex-wrap gap-4 py-4">
         {pageDto.items.map((item) => {
           return (
-            <li key={item.id} className="w-[calc(100%/3-1rem)]">
+            <li
+              key={item.id}
+              className="lg:w-[calc(100%/3-1rem)] md:w-[calc(100%/2-1rem)] w-full"
+            >
               <Link href={`/post/${item.id}`}>
                 <Card className="hover:bg-gray-100">
                   <CardHeader>
