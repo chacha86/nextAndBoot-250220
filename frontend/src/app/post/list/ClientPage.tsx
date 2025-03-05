@@ -93,43 +93,52 @@ export default function ClinetPage({
         pageArmSize={3}
         className="hidden md:flex"
       />
-      <ul className="flex flex-wrap gap-4 py-4">
-        {pageDto.items.map((item) => {
-          return (
-            <li
-              key={item.id}
-              className="lg:w-[calc(100%/3-1rem)] md:w-[calc(100%/2-1rem)] w-full"
-            >
-              <Link href={`/post/${item.id}`}>
-                <Card className="hover:bg-gray-100">
-                  <CardHeader>
-                    <CardTitle>{item.title}</CardTitle>
-                    <CardDescription className="sr-only">
-                      {item.title}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p>작성자 : {item.authorName}</p>
-                    <p>
-                      작성일 :{" "}
-                      {new Intl.DateTimeFormat("ko-KR", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hourCycle: "h23",
-                      })
-                        .format(new Date(item.createdDate))
-                        .replace(/\. /g, ". ")}
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+      {pageDto.totalItems == 0 ? (
+        <div className="flex justify-center items-center min-h-[calc(100dvh-300px)]">
+          <div className="flex items-center gap-4">
+            <Search />
+            <p>검색 결과가 없습니다.</p>
+          </div>
+        </div>
+      ) : (
+        <ul className="flex flex-wrap gap-4 py-4">
+          {pageDto.items.map((item) => {
+            return (
+              <li
+                key={item.id}
+                className="lg:w-[calc(100%/3-1rem)] md:w-[calc(100%/2-1rem)] w-full"
+              >
+                <Link href={`/post/${item.id}`}>
+                  <Card className="hover:bg-gray-100">
+                    <CardHeader>
+                      <CardTitle>{item.title}</CardTitle>
+                      <CardDescription className="sr-only">
+                        {item.title}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p>작성자 : {item.authorName}</p>
+                      <p>
+                        작성일 :{" "}
+                        {new Intl.DateTimeFormat("ko-KR", {
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hourCycle: "h23",
+                        })
+                          .format(new Date(item.createdDate))
+                          .replace(/\. /g, ". ")}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </div>
   );
 }
@@ -268,6 +277,10 @@ function CustomPagination({
 
   endPageNoOfBlock =
     endPageNoOfBlock >= endPageNo ? endPageNo - 1 : endPageNoOfBlock;
+
+  if (totalPages == 0) {
+    return;
+  }
 
   return (
     <div className={className}>
