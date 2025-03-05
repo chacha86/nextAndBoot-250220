@@ -119,7 +119,7 @@ export default function ClinetPage({
                     <CardContent>
                       <p>작성자 : {item.authorName}</p>
                       <p>
-                        작성일 :{" "}
+                        작성일 :
                         {new Intl.DateTimeFormat("ko-KR", {
                           year: "numeric",
                           month: "2-digit",
