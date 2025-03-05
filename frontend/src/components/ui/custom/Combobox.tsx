@@ -21,12 +21,14 @@ import { cn } from "@/lib/utils";
 export function Combobox({
   itemList,
   title,
+  selectedValue,
 }: {
   itemList: { value: string; label: string }[];
   title: string;
+  selectedValue: string;
 }) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(selectedValue ?? "");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
