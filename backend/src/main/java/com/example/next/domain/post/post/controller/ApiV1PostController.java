@@ -2,6 +2,7 @@ package com.example.next.domain.post.post.controller;
 
 import com.example.next.domain.member.member.entity.Member;
 import com.example.next.domain.post.post.dto.PageDto;
+import com.example.next.domain.post.post.dto.PostListParamDto;
 import com.example.next.domain.post.post.dto.PostWithContentDto;
 import com.example.next.domain.post.post.entity.Post;
 import com.example.next.domain.post.post.service.PostService;
@@ -56,11 +57,8 @@ public class ApiV1PostController {
     )
     @GetMapping
     @Transactional(readOnly = true)
-    public RsData<PageDto> getItems(@RequestParam(defaultValue = "1") int page,
-                                    @RequestParam(defaultValue = "3") int pageSize,
-                                    @RequestParam(defaultValue = "title") SearchKeywordType keywordType,
-                                    @RequestParam(defaultValue = "") String keyword) {
-        Page<Post> postPage = postService.getListedItems(page, pageSize, keywordType, keyword);
+    public RsData<PageDto> getItems(PostListParamDto postListParamDto) {
+        Page<Post> postPage = postService.getListedItems(postListParamDto);
 
         return new RsData<>(
                 "200-1",

@@ -2,11 +2,13 @@ package com.example.next.domain.post.post.service;
 
 import com.example.next.domain.member.member.entity.Member;
 import com.example.next.domain.post.post.controller.SearchKeywordType;
+import com.example.next.domain.post.post.dto.PostListParamDto;
 import com.example.next.domain.post.post.entity.Post;
 import com.example.next.domain.post.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,17 +68,9 @@ public class PostService {
         return postRepository.findTopByOrderByIdDesc();
     }
 
-    public Page<Post> getListedItems(int page, int pageSize, SearchKeywordType keywordType, String keyword) {
-        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "id"));
-
-        String likeKeyword = "%" + keyword + "%";
-
-        if(SearchKeywordType.content == keywordType) {
-            return postRepository.findByListedAndContentLike(true, likeKeyword, pageRequest);
-        }
-
-
-        return postRepository.findByListedAndTitleLike(true, likeKeyword, pageRequest);
+    public Page<Post> getListedItems(PostListParamDto postListParamDto) {
+        Pageable pageable = PageRequest.of(postListParamDto.getPage() - 1, postListParamDto.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
+        return postRepository.findByParam(postListParamDto, pageable);
     }
 
     public Page<Post> getMines(Member author, int page, int pageSize, SearchKeywordType keywordType, String keyword) {
