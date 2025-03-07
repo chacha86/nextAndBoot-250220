@@ -22,7 +22,7 @@ export default function WideHeader({ className }: { className: string }) {
       )}
       <HomeMenu />
       <PostMenu />
-      <ProfileMenu />
+      {isLogin && <ProfileMenu />}
       <ModeToggle />
     </div>
   );

@@ -59,26 +59,15 @@ export default function HomeMenu() {
             <div className="text-lg">{loginMember.nickname}</div>
           </DropdownMenuLabel>
         )}
-
-        {!isLogin && (
-          <DropdownMenuItem>
-            <Link href="/adm/member/login">관리자 로그인</Link>
-          </DropdownMenuItem>
-        )}
-        {!isLogin && (
-          <DropdownMenuItem>
-            <Link href="/member/join">회원 가입</Link>
-          </DropdownMenuItem>
-        )}
         {isLogin && (
-          <DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link href="" onClick={handleLogout}>
               로그아웃
             </Link>
           </DropdownMenuItem>
         )}
         {isLogin && (
-          <DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link href="/member/me">내정보</Link>
           </DropdownMenuItem>
         )}

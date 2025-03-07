@@ -22,16 +22,16 @@ export default function HomeMenu() {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <Link href="/post/list">글 목록</Link>
         </DropdownMenuItem>
         {isLogin && (
-          <DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link href="/post/write">글 작성</Link>
           </DropdownMenuItem>
         )}
         {isLogin && (
-          <DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link href="/post/list/me">내 글</Link>
           </DropdownMenuItem>
         )}
