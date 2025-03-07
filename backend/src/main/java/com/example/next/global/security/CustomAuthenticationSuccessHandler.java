@@ -30,12 +30,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             redirectUrl = "http://localhost:3000";
         }
         session.removeAttribute("redirectUrl");
-
-        Member member = rq.getActor();
-        String accessToken = memberService.genAccessToken(member);
+        Member actor = rq.getRealActor(rq.getActor());
+        String accessToken = memberService.genAccessToken(actor);
 
         rq.addCookie("accessToken", accessToken);
-        rq.addCookie("apiKey", member.getApiKey());
+        rq.addCookie("apiKey", actor.getApiKey());
 
         response.sendRedirect(redirectUrl);
     }
