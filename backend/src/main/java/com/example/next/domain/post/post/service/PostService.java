@@ -1,7 +1,6 @@
 package com.example.next.domain.post.post.service;
 
 import com.example.next.domain.member.member.entity.Member;
-import com.example.next.domain.post.post.controller.SearchKeywordType;
 import com.example.next.domain.post.post.dto.PostListParamDto;
 import com.example.next.domain.post.post.entity.Post;
 import com.example.next.domain.post.post.repository.PostRepository;
@@ -73,16 +72,9 @@ public class PostService {
         return postRepository.findByParam(postListParamDto, pageable);
     }
 
-    public Page<Post> getMines(Member author, int page, int pageSize, SearchKeywordType keywordType, String keyword) {
-
-        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "id"));
-        String likeKeyword = "%" + keyword + "%";
-
-        if(SearchKeywordType.content == keywordType) {
-            return postRepository.findByAuthorAndContentLike(author, likeKeyword, pageRequest);
-        }
-
-        return postRepository.findByAuthorAndTitleLike(author, likeKeyword, pageRequest);
+    public Page<Post> getMines(PostListParamDto postListParamDto, Member author) {
+        Pageable pageable = PageRequest.of(postListParamDto.getPage() - 1, postListParamDto.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
+        return postRepository.findByParam(postListParamDto, author, pageable);
 
     }
 }

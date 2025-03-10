@@ -1,5 +1,6 @@
 package com.example.next.domain.post.post.repository;
 
+import com.example.next.domain.member.member.entity.Member;
 import com.example.next.domain.post.post.controller.SearchKeywordType;
 import com.example.next.domain.post.post.dto.PostListParamDto;
 import com.example.next.domain.post.post.entity.Post;
@@ -22,8 +23,37 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<Post> findByParam(PostListParamDto postListParamDto, Pageable pageable) {
+    public Page<Post> findByParam(PostListParamDto postListParamDto, Member author, Pageable pageable) {
+        BooleanBuilder builder = getParamBuilder(postListParamDto);
 
+        if(author != null) {
+            builder.and(post.author.eq(author));
+        }
+
+        return getPagedItems(pageable, builder);
+    }
+    @Override
+    public Page<Post> findByParam(PostListParamDto postListParamDto, Pageable pageable) {
+        BooleanBuilder builder = getParamBuilder(postListParamDto);
+        return getPagedItems(pageable, builder);
+    }
+
+    public Page<Post> getPagedItems(Pageable pageable, BooleanBuilder builder) {
+        JPAQuery<Post> postJPAQuery = queryFactory.select(post)
+                .from(post)
+                .where(builder);
+
+        postJPAQuery.offset(pageable.getOffset()).limit(pageable.getPageSize());
+        JPAQuery<Long> totalQuery = queryFactory.select(post.count())
+                .from(post)
+                .where(builder);
+
+        applySorting(pageable, postJPAQuery);
+
+        return PageableExecutionUtils.getPage(postJPAQuery.fetch(), pageable, totalQuery::fetchOne);
+    }
+
+    public BooleanBuilder getParamBuilder(PostListParamDto postListParamDto) {
         String keyword = postListParamDto.keyword();
         SearchKeywordType keywordType = postListParamDto.keywordType();
 
@@ -42,20 +72,9 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
             default -> builder.and(
                     post.title.containsIgnoreCase(keyword)
                             .or(post.content.containsIgnoreCase(keyword)));
-         }
+        }
 
-        JPAQuery<Post> postJPAQuery = queryFactory.select(post)
-                .from(post)
-                .where(builder);
-
-        postJPAQuery.offset(pageable.getOffset()).limit(pageable.getPageSize());
-        JPAQuery<Long> totalQuery = queryFactory.select(post.count())
-                .from(post)
-                .where(builder);
-
-        applySorting(pageable, postJPAQuery);
-
-        return PageableExecutionUtils.getPage(postJPAQuery.fetch(), pageable, totalQuery::fetchOne);
+        return builder;
     }
 
     public void applySorting(Pageable pageable, JPAQuery<Post> postJPAQuery) {

@@ -75,15 +75,10 @@ public class ApiV1PostController {
     )
     @GetMapping("/mine")
     @Transactional(readOnly = true)
-    public RsData<PageDto> getMines(
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "3") int pageSize,
-            @RequestParam(defaultValue = "title") SearchKeywordType keywordType,
-            @RequestParam(defaultValue = "") String keyword
-    ) {
+    public RsData<PageDto> getMines(PostListParamDto postListParamDto) {
 
         Member actor = rq.getActor();
-        Page<Post> pagePost = postService.getMines(actor, page, pageSize, keywordType, keyword);
+        Page<Post> pagePost = postService.getMines(postListParamDto, actor);
 
         return new RsData<>("200-1",
                 "내 글 목록 조회가 완료되었습니다.",
