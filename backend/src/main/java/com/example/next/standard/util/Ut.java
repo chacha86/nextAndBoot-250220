@@ -15,6 +15,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -98,15 +99,6 @@ public class Ut {
             return MIME_TYPE_MAP.getOrDefault(mineType, "tmp");
         }
 
-        @SneakyThrows
-        private static void mv(String oldFilePath, String newFilePath) {
-            Files.move(
-                    Path.of(oldFilePath),
-                    Path.of(newFilePath),
-                    StandardCopyOption.REPLACE_EXISTING
-            );
-        }
-
         private static String getExtensionFromResponse(HttpResponse<?> response) {
             return response.headers()
                     .firstValue("Content-Type")
@@ -147,6 +139,18 @@ public class Ut {
         @SneakyThrows
         public static long getFileSize(String filePath) {
             return Files.size(Path.of(filePath));
+        }
+
+        @SneakyThrows
+        public static void mv(String oldFilePath, String newFilePath) {
+
+            mkdir(Paths.get(newFilePath).getParent().toString());
+
+            Files.move(
+                    Path.of(oldFilePath),
+                    Path.of(newFilePath),
+                    StandardCopyOption.REPLACE_EXISTING
+            );
         }
 
         @SneakyThrows

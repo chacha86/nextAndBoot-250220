@@ -1,6 +1,7 @@
 package com.example.next.domain.post.genFile.entity;
 
 import com.example.next.domain.post.post.entity.Post;
+import com.example.next.global.app.AppConfig;
 import com.example.next.global.entity.BaseTime;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,4 +26,8 @@ public class PostGenFile extends BaseTime {
     private String fileExt;
     private String fileName;
     private long fileSize;
+
+    public String getFilePath() {
+        return AppConfig.getGenFileDirPath() + "/post/" + fileName;
+    }
 }

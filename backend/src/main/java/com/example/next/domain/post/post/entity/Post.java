@@ -38,7 +38,7 @@ public class Post extends BaseTime {
     @Builder.Default
     private List<PostGenFile> genFiles = new ArrayList<>();
 
-    public void addGenFile(String typeCode, String filePath) {
+    public PostGenFile addGenFile(String typeCode, String filePath) {
 
         String originalFileName = Ut.File.getOriginalFileName(filePath);
         String fileExt = Ut.File.getFileExt(filePath);
@@ -56,6 +56,9 @@ public class Post extends BaseTime {
                 .build();
 
         genFiles.add(genFile);
+        Ut.File.mv(filePath, genFile.getFilePath());
+
+        return genFile;
     }
 
     public Comment addComment(Member author, String content) {
