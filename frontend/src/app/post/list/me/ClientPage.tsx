@@ -69,7 +69,7 @@ export default function ClinetPage({
             pageSize={pageSize}
             onValueChangeHandler={(value) => {
               router.push(
-                `/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${value}&page=${page}`
+                `/post/list/me?keywordType=${keywordType}&keyword=${keyword}&pageSize=${value}&page=${page}`
               );
             }}
           />
@@ -165,6 +165,8 @@ function SearchDialog({
             {
               title: "제목 : ",
               content: "내용 : ",
+              author: "작성자 : ",
+              all: "전체 : ",
             }[keywordType] + keyword
           }
           readOnly
@@ -190,7 +192,7 @@ function SearchDialog({
             const pageSize = formData.get("pageSize") as string;
 
             router.push(
-              `/post/list?keywordType=${searchKeywordType}&keyword=${searchKeyword}&pageSize=${pageSize}&page=${page}`
+              `/post/list/me?keywordType=${searchKeywordType}&keyword=${searchKeyword}&pageSize=${pageSize}&page=${page}`
             );
           }}
         >
@@ -203,6 +205,8 @@ function SearchDialog({
                 <SelectContent>
                   <SelectItem value="title">제목</SelectItem>
                   <SelectItem value="content">내용</SelectItem>
+                  <SelectItem value="author">작성자</SelectItem>
+                  <SelectItem value="all">전체</SelectItem>
                 </SelectContent>
               </Select>
               <PageSizeSelect pageSize={pageSize} />
@@ -288,7 +292,7 @@ function CustomPagination({
         <PaginationContent>
           <PaginationItem>
             <PaginationLink
-              href={`/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=1`}
+              href={`/post/list/me?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=1`}
             >
               1
             </PaginationLink>
@@ -303,7 +307,7 @@ function CustomPagination({
               <PaginationItem key={pageNo}>
                 <PaginationLink
                   isActive={pageNo == page}
-                  href={`/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=${pageNo}`}
+                  href={`/post/list/me?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=${pageNo}`}
                 >
                   {pageNo}
                 </PaginationLink>
@@ -318,7 +322,7 @@ function CustomPagination({
           {endPageNo != startPageNo && (
             <PaginationItem>
               <PaginationLink
-                href={`/post/list?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=${totalPages}`}
+                href={`/post/list/me?keywordType=${keywordType}&keyword=${keyword}&pageSize=${pageSize}&page=${totalPages}`}
               >
                 {totalPages}
               </PaginationLink>
