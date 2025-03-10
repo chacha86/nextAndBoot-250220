@@ -23,4 +23,8 @@ public class AppConfig {
     public static String getSiteFrontUrl() {
         return "http://localhost:3000";
     }
+
+    public static String getTempDirPath() {
+        return System.getProperty("java.io.tmpdir");
+    }
 }
