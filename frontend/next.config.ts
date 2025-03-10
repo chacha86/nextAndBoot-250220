@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "placehold.co",
       },
+      {
+        protocol: "http",
+        hostname: "k.kakaocdn.net",
+      },
     ],
     contentSecurityPolicy: "default-src 'self'; img-src 'self' data: https:;",
   },

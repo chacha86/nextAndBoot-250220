@@ -26,6 +26,7 @@ export default async function Page({
         keywordType,
         pageSize,
         page,
+        listed: true,
       },
     },
   });
