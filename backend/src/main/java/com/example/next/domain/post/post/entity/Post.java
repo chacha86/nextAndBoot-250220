@@ -2,8 +2,10 @@ package com.example.next.domain.post.post.entity;
 
 import com.example.next.domain.member.member.entity.Member;
 import com.example.next.domain.post.comment.entity.Comment;
+import com.example.next.domain.post.genFile.entity.PostGenFile;
 import com.example.next.global.entity.BaseTime;
 import com.example.next.global.exception.ServiceException;
+import com.example.next.standard.util.Ut;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -11,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @AllArgsConstructor
@@ -30,6 +33,30 @@ public class Post extends BaseTime {
     @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @Builder.Default
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @Builder.Default
+    private List<PostGenFile> genFiles = new ArrayList<>();
+
+    public void addGenFile(String typeCode, String filePath) {
+
+        String originalFileName = Ut.File.getOriginalFileName(filePath);
+        String fileExt = Ut.File.getFileExt(filePath);
+        String fileName = UUID.randomUUID() + "." + fileExt;
+        long fileSize = Ut.File.getFileSize(filePath);
+
+        PostGenFile genFile = PostGenFile.builder()
+                .post(this)
+                .typeCode(typeCode)
+                .filePath(filePath)
+                .originalFileName(originalFileName)
+                .fileExt(fileExt)
+                .fileName(fileName)
+                .fileSize(fileSize)
+                .build();
+
+        genFiles.add(genFile);
+    }
 
     public Comment addComment(Member author, String content) {
 
