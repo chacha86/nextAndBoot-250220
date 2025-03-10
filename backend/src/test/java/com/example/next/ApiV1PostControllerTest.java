@@ -4,6 +4,7 @@ import com.example.next.domain.member.member.entity.Member;
 import com.example.next.domain.member.member.service.MemberService;
 import com.example.next.domain.post.post.controller.ApiV1PostController;
 import com.example.next.domain.post.post.controller.SearchKeywordType;
+import com.example.next.domain.post.post.dto.PostListParamDto;
 import com.example.next.domain.post.post.entity.Post;
 import com.example.next.domain.post.post.service.PostService;
 import org.junit.jupiter.api.BeforeEach;
@@ -90,12 +91,20 @@ public class ApiV1PostControllerTest {
     }
 
     @Test
-    @DisplayName("글 다건 조회")
+    @DisplayName("글 다건 조회 - 공개 글 목록")
     void items1() throws Exception {
+
+        int pageSize = 10;
+        int page = 1;
+        String keyword = "";
+        SearchKeywordType keywordType = SearchKeywordType.title;
+        boolean listed = true;
 
         ResultActions resultActions = mvc
                 .perform(
-                        get("/api/v1/posts")
+                        get("/api/v1/posts?page=%d&pageSize=%d&keywordType=%s&keyword=%s&listed=%s"
+                                .formatted(page, pageSize, keywordType, keyword, listed)
+                        )
                 )
                 .andDo(print());
 
@@ -105,12 +114,20 @@ public class ApiV1PostControllerTest {
                 .andExpect(handler().methodName("getItems"))
                 .andExpect(jsonPath("$.code").value("200-1"))
                 .andExpect(jsonPath("$.msg").value("글 목록 조회가 완료되었습니다."))
-                .andExpect(jsonPath("$.data.items.length()").value(3)) // 한페이지당 보여줄 글 개수
+                .andExpect(jsonPath("$.data.items.length()").value(pageSize)) // 한페이지당 보여줄 글 개수
                 .andExpect(jsonPath("$.data.currentPageNo").isNumber()) // 현재 페이지
                 .andExpect(jsonPath("$.data.totalPages").isNumber()); // 전체 페이지 개수
 
 
-        Page<Post> postPage = postService.getListedItems(1, 3, SearchKeywordType.title, "");
+        PostListParamDto postListParamDto = PostListParamDto.builder()
+                .page(page)
+                .pageSize(pageSize)
+                .keyword(keyword)
+                .keywordType(keywordType)
+                .listed(listed)
+                .build();
+
+        Page<Post> postPage = postService.getItems(postListParamDto);
         List<Post> posts = postPage.getContent();
         checkPosts(posts, resultActions);
 
@@ -122,14 +139,15 @@ public class ApiV1PostControllerTest {
 
         int page = 1;
         int pageSize = 3;
-        // 검색어, 검색 대상
-        String keywordType = "title";
+
+        SearchKeywordType keywordType = SearchKeywordType.title;
         String keyword = "title";
+        boolean listed = true;
 
         ResultActions resultActions = mvc
                 .perform(
-                        get("/api/v1/posts?page=%d&pageSize=%d&keywordType=%s&keyword=%s"
-                                .formatted(page, pageSize, keywordType, keyword)
+                        get("/api/v1/posts?page=%d&pageSize=%d&keywordType=%s&keyword=%s&listed=%s"
+                                .formatted(page, pageSize, keywordType, keyword, listed)
                         )
                 )
                 .andDo(print());
@@ -145,7 +163,15 @@ public class ApiV1PostControllerTest {
                 .andExpect(jsonPath("$.data.totalPages").value(50))
                 .andExpect(jsonPath("$.data.totalItems").value(148));
 
-        Page<Post> postPage = postService.getListedItems(page, pageSize, SearchKeywordType.title, keyword);
+        PostListParamDto postListParamDto = PostListParamDto.builder()
+                .page(page)
+                .pageSize(pageSize)
+                .keyword(keyword)
+                .keywordType(keywordType)
+                .listed(listed)
+                .build();
+
+        Page<Post> postPage = postService.getItems(postListParamDto);
         List<Post> posts = postPage.getContent();
         checkPosts(posts, resultActions);
 
@@ -157,14 +183,15 @@ public class ApiV1PostControllerTest {
 
         int page = 1;
         int pageSize = 3;
-        // 검색어, 검색 대상
-        String keywordType = "content";
+
+        SearchKeywordType keywordType = SearchKeywordType.content;
         String keyword = "content";
+        boolean listed = true;
 
         ResultActions resultActions = mvc
                 .perform(
-                        get("/api/v1/posts?page=%d&pageSize=%d&keywordType=%s&keyword=%s"
-                                .formatted(page, pageSize, keywordType, keyword)
+                        get("/api/v1/posts?page=%d&pageSize=%d&keywordType=%s&keyword=%s&listed=%s"
+                                .formatted(page, pageSize, keywordType, keyword, listed)
                         )
                 )
                 .andDo(print());
@@ -180,7 +207,16 @@ public class ApiV1PostControllerTest {
                 .andExpect(jsonPath("$.data.totalPages").value(50))
                 .andExpect(jsonPath("$.data.totalItems").value(148));
 
-        Page<Post> postPage = postService.getListedItems(page, pageSize, SearchKeywordType.title, keyword);
+        PostListParamDto postListParamDto = PostListParamDto.builder()
+                .page(page)
+                .pageSize(pageSize)
+                .keyword(keyword)
+                .keywordType(keywordType)
+                .listed(listed)
+                .build();
+
+        Page<Post> postPage = postService.getItems(postListParamDto);
+
         List<Post> posts = postPage.getContent();
         checkPosts(posts, resultActions);
 
@@ -193,7 +229,7 @@ public class ApiV1PostControllerTest {
         int page = 1;
         int pageSize = 3;
         // 검색어, 검색 대상
-        String keywordType = "";
+        SearchKeywordType keywordType = SearchKeywordType.title;
         String keyword = "";
 
         ResultActions resultActions = mvc
@@ -217,7 +253,14 @@ public class ApiV1PostControllerTest {
                 .andExpect(jsonPath("$.data.totalItems").value(95));
 
 
-        Page<Post> postPage = postService.getMines(loginedMember, page, pageSize, SearchKeywordType.title, keyword);
+        PostListParamDto postListParamDto = PostListParamDto.builder()
+                .page(page)
+                .pageSize(pageSize)
+                .keyword(keyword)
+                .keywordType(keywordType)
+                .build();
+
+        Page<Post> postPage = postService.getMines(postListParamDto, loginedMember);
         List<Post> posts = postPage.getContent();
         checkPosts(posts, resultActions);
 

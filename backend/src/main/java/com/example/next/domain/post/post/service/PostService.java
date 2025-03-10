@@ -67,7 +67,7 @@ public class PostService {
         return postRepository.findTopByOrderByIdDesc();
     }
 
-    public Page<Post> getListedItems(PostListParamDto postListParamDto) {
+    public Page<Post> getItems(PostListParamDto postListParamDto) {
         Pageable pageable = PageRequest.of(postListParamDto.getPage() - 1, postListParamDto.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
         return postRepository.findByParam(postListParamDto, pageable);
     }

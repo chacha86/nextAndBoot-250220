@@ -1,7 +1,9 @@
 package com.example.next.domain.post.post.dto;
 
 import com.example.next.domain.post.post.controller.SearchKeywordType;
+import lombok.Builder;
 
+@Builder
 public record PostListParamDto(
         SearchKeywordType keywordType,
         String keyword,

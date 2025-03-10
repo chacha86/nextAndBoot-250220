@@ -59,7 +59,7 @@ public class ApiV1PostController {
     @GetMapping
     @Transactional(readOnly = true)
     public RsData<PageDto> getItems(@ParameterObject PostListParamDto postListParamDto) {
-        Page<Post> postPage = postService.getListedItems(postListParamDto);
+        Page<Post> postPage = postService.getItems(postListParamDto);
 
         return new RsData<>(
                 "200-1",
