@@ -1,7 +1,5 @@
 package com.example.next.domain.member.member.service;
 
-import com.example.next.domain.member.member.service.AuthTokenService;
-import com.example.next.domain.member.member.service.MemberService;
 import com.example.next.domain.member.member.entity.Member;
 import com.example.next.standard.util.Ut;
 import org.junit.jupiter.api.DisplayName;
@@ -43,9 +41,9 @@ public class AuthTokenServiceTest {
     void createToken() {
         Map<String, Object> originPayload = Map.of("name", "john", "age", 23);
 
-        String jwtStr = Ut.Jwt.createToken(keyString, expireSeconds, originPayload);
+        String jwtStr = Ut.jwt.createToken(keyString, expireSeconds, originPayload);
         assertThat(jwtStr).isNotBlank();
-        Map<String, Object> parsedPayload = Ut.Jwt.getPayload(keyString, jwtStr);
+        Map<String, Object> parsedPayload = Ut.jwt.getPayload(keyString, jwtStr);
 
         assertThat(parsedPayload).containsAllEntriesOf(originPayload);
     }
@@ -69,7 +67,7 @@ public class AuthTokenServiceTest {
 
         Member member = memberService.findByUsername("user1").get();
         String accessToken = authTokenService.genAccessToken(member);
-        boolean isValid = Ut.Jwt.isValidToken(keyString, accessToken);
+        boolean isValid = Ut.jwt.isValidToken(keyString, accessToken);
         assertThat(isValid).isTrue();
 
         Map<String, Object> parsedPayload = authTokenService.getPayload(accessToken);

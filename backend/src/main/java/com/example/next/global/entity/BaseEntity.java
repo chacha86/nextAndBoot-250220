@@ -24,6 +24,6 @@ public class BaseEntity {
 
     public String getModelName() {
         String simpleName = this.getClass().getSimpleName();
-        return Ut.Str.lcfirst(simpleName);
+        return Ut.str.lcfirst(simpleName);
     }
 }
