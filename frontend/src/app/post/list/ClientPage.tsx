@@ -165,6 +165,8 @@ function SearchDialog({
             {
               title: "제목 : ",
               content: "내용 : ",
+              author: "작성자 : ",
+              all: "전체 : ",
             }[keywordType] + keyword
           }
           readOnly
@@ -203,6 +205,8 @@ function SearchDialog({
                 <SelectContent>
                   <SelectItem value="title">제목</SelectItem>
                   <SelectItem value="content">내용</SelectItem>
+                  <SelectItem value="author">작성자</SelectItem>
+                  <SelectItem value="all">전체</SelectItem>
                 </SelectContent>
               </Select>
               <PageSizeSelect pageSize={pageSize} />
