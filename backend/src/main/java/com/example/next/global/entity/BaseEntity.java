@@ -1,5 +1,6 @@
 package com.example.next.global.entity;
 
+import com.example.next.standard.util.Ut;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,4 +22,8 @@ public class BaseEntity {
     @EqualsAndHashCode.Include
     private Long id; // long -> null X, Long -> null O
 
+    public String getModelName() {
+        String simpleName = this.getClass().getSimpleName();
+        return Ut.Str.lcfirst(simpleName);
+    }
 }
