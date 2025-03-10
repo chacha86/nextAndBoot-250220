@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,7 +58,7 @@ public class ApiV1PostController {
     )
     @GetMapping
     @Transactional(readOnly = true)
-    public RsData<PageDto> getItems(PostListParamDto postListParamDto) {
+    public RsData<PageDto> getItems(@ParameterObject PostListParamDto postListParamDto) {
         Page<Post> postPage = postService.getListedItems(postListParamDto);
 
         return new RsData<>(
@@ -75,7 +76,7 @@ public class ApiV1PostController {
     )
     @GetMapping("/mine")
     @Transactional(readOnly = true)
-    public RsData<PageDto> getMines(PostListParamDto postListParamDto) {
+    public RsData<PageDto> getMines(@ParameterObject PostListParamDto postListParamDto) {
 
         Member actor = rq.getActor();
         Page<Post> pagePost = postService.getMines(postListParamDto, actor);
