@@ -38,7 +38,11 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
         switch (keywordType) {
             case title -> builder.and(post.title.containsIgnoreCase(keyword));
             case content -> builder.and(post.content.containsIgnoreCase(keyword));
-        }
+            case author -> builder.and(post.author.nickname.containsIgnoreCase(keyword));
+            default -> builder.and(
+                    post.title.containsIgnoreCase(keyword)
+                            .or(post.content.containsIgnoreCase(keyword)));
+         }
 
         JPAQuery<Post> postJPAQuery = queryFactory.select(post)
                 .from(post)
