@@ -10,15 +10,18 @@ export default async function Page({
   };
 }) {
   const { id } = await params;
-  const post = await getPost(id);
+  const res = await fetchPost(id);
 
-  if (!post) {
-    return <div>게시물을 찾을 수 없습니다.</div>;
+  if (res.error) {
+    return <ErrorPage msg={res.error.msg} />;
   }
+
+  const post = res.data.data;
 
   return <ClientPage post={post} />;
 }
 
+import ErrorPage from "@/components/business/ErrorPage";
 import type { Metadata, ResolvingMetadata } from "next";
 
 type Props = {
@@ -32,22 +35,24 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { id } = await params;
 
-  const product = await getPost(Number(id));
+  const res = await fetchPost(Number(id));
 
-  if (!product) {
+  if (res.error) {
     return {
-      title: "Post not found",
-      description: "Post not found",
+      title: res.error.msg,
+      description: res.error.msg,
     };
   }
 
+  const post = res.data.data;
+
   return {
-    title: product.title,
-    description: product.content,
+    title: post.title,
+    description: post.content,
   };
 }
 
-async function getPost(id: number) {
+async function fetchPost(id: number) {
   const response = await client.GET("/api/v1/posts/{id}", {
     params: {
       path: {
@@ -59,12 +64,5 @@ async function getPost(id: number) {
     },
   });
 
-  if (response.error) {
-    return null;
-  }
-
-  const rsData = response.data;
-  const post = rsData.data;
-
-  return post;
+  return response;
 }

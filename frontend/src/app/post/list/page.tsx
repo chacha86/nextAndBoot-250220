@@ -1,4 +1,4 @@
-import ErrorPage from "@/app/post/list/ErrorPage";
+import ErrorPage from "@/components/business/ErrorPage";
 import client from "@/lib/backend/client";
 import ClinetPage from "./ClientPage";
 

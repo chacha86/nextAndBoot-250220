@@ -36,7 +36,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Search } from "lucide-react";
+import { Lock, Search } from "lucide-react";
 import { useState } from "react";
 
 export default function ClinetPage({
@@ -111,7 +111,10 @@ export default function ClinetPage({
                 <Link href={`/post/${item.id}`}>
                   <Card className="hover:bg-gray-100">
                     <CardHeader>
-                      <CardTitle>{item.title}</CardTitle>
+                      <CardTitle className="flex items-center gap-2">
+                        {item.title}
+                        {!item.published && <Lock size={16} />}
+                      </CardTitle>
                       <CardDescription className="sr-only">
                         {item.title}
                       </CardDescription>
